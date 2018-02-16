@@ -8,7 +8,7 @@ import os
 from bs4 import BeautifulSoup
 import requests
 
-config = {}
+config = {} # This will be our memory
 
 def fetch_url():
     url = _url.get()
@@ -17,15 +17,15 @@ def fetch_url():
     try:
         page = requests.get(url)
     except requests.RequestException as rex:
-        _sb(str(rex))
+        _statusbar(str(rex))
     else:
         soup = BeautifulSoup(page.content, 'html.parser')
         images = fetch_images(soup, url)
         if images:
             _images.set(tuple(img['name'] for img in images))
-            _sb('Images found: {}'.format(len(images)))
+            _statusbar('Images found: {}'.format(len(images)))
         else:
-            _sb('No images found')
+            _statusbar('No images found')
         config['images'] = images
 		
 def fetch_images(soup, base_url):
@@ -74,8 +74,11 @@ def _save_json(filename):
             ijson.write(json.dumps(data))
         _alert('Done')
 		
-def _sb(arg):
-    pass		
+def _statusbar(arg):
+    _status_msg.set(msg)
+
+def _alert(msg):
+    messagebox.showinfo(meassage=msg)		
 
 
 if __name__ == '__main__':
