@@ -10,6 +10,7 @@ import requests
 
 config = {} # This will be our memory
 
+# Scaning the given url:
 def fetch_url():
     url = _url.get()
     config['images'] = []
@@ -27,7 +28,8 @@ def fetch_url():
         else:
             _statusbar('No images found')
         config['images'] = images
-		
+
+# Scaning all the img objects in the page:
 def fetch_images(soup, base_url):
     images = []
     for img in soup.findAll('img'):
@@ -38,6 +40,7 @@ def fetch_images(soup, base_url):
         images.append(dict(name=name, url=img_url))
     return images
 
+# function for saving the images:
 def save():
     if not config.get('images'):
         _alert('No images to save')
@@ -51,7 +54,8 @@ def save():
             initialfile='images.json',
             filetypes=[('JSON','.json')])
         _save_json(filename)
-		
+
+# Saving the choosen images in selected path:
 def _save_images(dirname):
     if dirname and config.get('images'):
         for img in config['images']:
@@ -60,7 +64,8 @@ def _save_images(dirname):
             with open(filename, 'wb') as f:
                 f.write(img_data)
         _alert('Done')
-		
+	
+# Saving choosen images like a .json file:	
 def _save_json(filename):
     if filename and config.get('images'):
         data = {}
@@ -73,26 +78,34 @@ def _save_json(filename):
         with open(filename, 'w') as ijson:
             ijson.write(json.dumps(data))
         _alert('Done')
-		
+	
+# Status Bar:	
 def _statusbar(arg):
-    _status_msg.set(msg)
+    _status_msg.set(arg)
 
+# Alert function:
 def _alert(msg):
-    messagebox.showinfo(meassage=msg)		
+    messagebox.showinfo(message=msg)		
 
 
+# The gui:
 if __name__ == '__main__':
+
+# Defining the window:
     _root = Tk()
     _root.title('Scrape app')
-####################
+
+# Define mainframe, where all the objects will be:
     _mainframe = ttk.Frame(_root, padding='5 5 5 5')
     _mainframe.grid(row=0, column=0, sticky=(E, W, N, S))
-########################
+
+# Url frame, where you write the url for scrapping:
     _url_frame = ttk.LabelFrame(_mainframe, text='URL', padding='5 5 5 5')
     _url_frame.grid(row=0, column=0, sticky=(E, W))
     _url_frame.columnconfigure(0, weight=1)
     _url_frame.rowconfigure(0, weight=1)
-####################
+
+
     _url = StringVar()
     _url.set('http://localhost:8000')
     _url_entry = ttk.Entry(
@@ -101,11 +114,12 @@ if __name__ == '__main__':
     _fetch_btn = ttk.Button(
       _url_frame, text='Fetch info', command=fetch_url)
     _fetch_btn.grid(row=0, column=1, sticky=W, padx=5)
-#########################    
+
+# Define the frame, where list of all images will be:   
     _img_frame = ttk.LabelFrame(
       _mainframe, text='Content', padding='9 0 0 0')
     _img_frame.grid(row=1, column=0, sticky=(N, S, E, W))
-#######################3    
+  
     _images = StringVar()
     _img_listbox = Listbox(
       _img_frame, listvariable=_images, height=6, width=25)
@@ -114,10 +128,11 @@ if __name__ == '__main__':
       _img_frame, orient=VERTICAL, command=_img_listbox.yview)
     _scrollbar.grid(row=0, column=1, sticky=(S, N), pady=6)
     _img_listbox.configure(yscrollcommand=_scrollbar.set)
-#######################
+
+# Define frame for the radio buttons(buttons to select save format for the images):
     _radio_frame = ttk.Frame(_img_frame)
     _radio_frame.grid(row=0, column=2, sticky=(N, S, W, E))
-#################
+# simple lable with text for the radio buttons:
     _choice_lbl = ttk.Label(
       _radio_frame, text='Choose how to save images')
     _choice_lbl.grid(row=0, column=0, padx=5, pady=5)
@@ -137,7 +152,8 @@ if __name__ == '__main__':
     _scrape_btn = ttk.Button(
       _mainframe, text='Scrape!', command=save)
     _scrape_btn.grid(row=2, column=0, sticky=E, pady=5)
-#########
+
+# Define the frame for the StatusBar:
     _status_frame= ttk.Frame(
       _root, relief='sunken', padding='2 2 2 2')
     _status_frame.grid(row=1, column=0, sticky=(E, W, S))
