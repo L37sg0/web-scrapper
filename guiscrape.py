@@ -94,15 +94,26 @@ if __name__ == '__main__':
 # Defining the window:
     _root = Tk()
     _root.title('Scrape app')
-
+# make _root window resizable:
+    _root.columnconfigure(0, weight=1)
+    _root.rowconfigure(0, weight=1)
+# set default size of the window:
+    _root.geometry("720x480")
 # Define mainframe, where all the objects will be:
     _mainframe = ttk.Frame(_root, padding='5 5 5 5')
     _mainframe.grid(row=0, column=0, sticky=(E, W, N, S))
+# make _mainframe resizable:
+    _mainframe.columnconfigure(0, weight=1)
+    _mainframe.rowconfigure(0, weight=1)
+    _mainframe.rowconfigure(1, weight=1)
+    _mainframe.rowconfigure(2, weight=1)
 
 # Url frame, where you write the url for scrapping:
     _url_frame = ttk.LabelFrame(_mainframe, text='URL', padding='5 5 5 5')
     _url_frame.grid(row=0, column=0, sticky=(E, W))
+# make _url_frame resizable:
     _url_frame.columnconfigure(0, weight=1)
+    #_url_frame.columnconfigure(1, weight=1)
     _url_frame.rowconfigure(0, weight=1)
 
 
@@ -119,11 +130,14 @@ if __name__ == '__main__':
     _img_frame = ttk.LabelFrame(
       _mainframe, text='Content', padding='9 0 0 0')
     _img_frame.grid(row=1, column=0, sticky=(N, S, E, W))
+    _img_frame.columnconfigure(0, weight=1)
+    _img_frame.rowconfigure(0, weight=1)
   
     _images = StringVar()
     _img_listbox = Listbox(
       _img_frame, listvariable=_images, height=6, width=25)
-    _img_listbox.grid(row=0, column=0, sticky=(E, W), pady=5)
+    _img_listbox.grid(row=0, column=0, sticky=(E, W, S, N), pady=5)
+                                           # here ^ ^ ^ we make the listbox expandable.
     _scrollbar = ttk.Scrollbar(
       _img_frame, orient=VERTICAL, command=_img_listbox.yview)
     _scrollbar.grid(row=0, column=1, sticky=(S, N), pady=6)
