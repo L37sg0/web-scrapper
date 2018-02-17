@@ -1,9 +1,9 @@
 # web-scrapper
  A gui project from the book 'Learning Python'- Fabrizio Romano.
 # further goals:
-- improved code quality
-- improved naming
-- add resize option to the root window
+- improved code quality     			# Done!
+- improved naming						# Done!
+- add resize option to the root window 	# Done!
 - divide selecting to save PNGs or JPGs
 - multiple selection in Listbox
 - adding 'select file'-dialog
